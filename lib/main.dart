@@ -1,53 +1,32 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+Color mainColor = Color.fromARGB(255, 94, 202, 202);
+Color accentColor = const Color.fromARGB(255, 192, 245, 245);
+Color bgColor = const Color.fromARGB(255, 237, 255, 255);
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyApp());              
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Inconnection app',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: mainColor),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'inconnection'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -55,71 +34,167 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  int counter = 0;
 
-  void _incrementCounter() {
+  void addPost() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      counter++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+        title: Text(widget.title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 30),
         ),
       ),
+      body: Center(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            LeftSideBar(funtion: addPost),
+            CenterMain(counter: counter),
+            const RightPanel(),
+          ],
+        )
+      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: addPost,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
+    );
+  }
+}
+
+class LeftSideBar extends StatelessWidget {
+  const LeftSideBar({super.key, required this.funtion});
+  
+  final VoidCallback funtion;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(15),
+      width: 200,
+      color: accentColor,
+      child: Column(
+        children:[
+          IconButton(onPressed: foo, icon: const Row( children: [
+            Icon(Icons.face, size: 50, color: Colors.cyan),
+            Text("My page",),
+          ],)
+          ),
+          IconButton(onPressed: foo, icon: const Row( children: [
+            Icon(Icons.favorite, size: 50, color: Colors.cyan),
+            Text("Favorite",),
+          ],)
+          ),
+          IconButton(onPressed: foo, icon: const Row( children: [
+            Icon(Icons.photo, size: 50, color: Colors.cyan),
+            Text("Photo",),
+          ],)
+          ),
+          IconButton(onPressed: funtion, icon: const Row( children: [
+            Icon(Icons.add_box, size: 50, color: Colors.cyan),
+            Text("Add post",),
+          ],)
+          )
+        ]
+      )
+    );
+  }
+
+  void foo(){}
+} 
+
+class CenterMain extends StatelessWidget {
+  const CenterMain({super.key, required this.counter});
+  final int counter;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(15),
+      color: bgColor,
+      width: 600,
+      child: Column(children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Icon(Icons.face_outlined, size: 200,),
+            Container(
+              padding: const EdgeInsets.only(top: 20),
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Lebed Nikita Vladimirovich",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
+                  ),
+                  Text("I work in Game Forest"),
+              ],)
+            )
+          ]
+        ),
+        Expanded(child: ListView.separated(
+          itemCount: counter,
+          itemBuilder: (BuildContext context, int index) {
+            index++;
+            return createPost("Post numder $index", "Some text\nAnother text");
+          },
+          separatorBuilder: (BuildContext context, int index) {
+            return const SizedBox(height: 10);
+          },
+        ))
+      ])
+    );
+  }
+
+  Widget createPost(String title, String content) {
+    return Container(
+      padding: const EdgeInsets.all(15),
+      color: accentColor,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+        Text(title, textAlign: TextAlign.left, style: const TextStyle(fontWeight: FontWeight.bold),),
+        const SizedBox(height: 10,),
+        Text(content, textAlign: TextAlign.left,),
+      ],)
+      );
+  }
+}
+
+class RightPanel extends StatelessWidget {
+  const RightPanel({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 200,
+      padding: const EdgeInsets.all(15),
+      color: const Color.fromARGB(255, 245, 245, 245),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text("Ads here"),
+          Container(height: 100, color: const Color.fromARGB(255, 240, 240, 240)),
+          const Text("And here"),
+          Container(height: 100, color: const Color.fromARGB(255, 240, 240, 240)),
+          const Text("And here"),
+          Container(height: 100, color: const Color.fromARGB(255, 240, 240, 240)),
+        ],
+      ),
     );
   }
 }
