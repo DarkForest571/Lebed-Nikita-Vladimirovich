@@ -1,14 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:easy_localization/easy_localization.dart';
+
+import './generated/locale_keys.g.dart';
 
 Color mainColor = Color.fromARGB(255, 94, 202, 202);
 Color accentColor = const Color.fromARGB(255, 192, 245, 245);
 Color bgColor = const Color.fromARGB(255, 237, 255, 255);
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -25,15 +25,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    //context.setLocale(context.locale);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title,
+        title: Text(LocaleKeys.appName.tr(),
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 30),
         ),
+        actions: [
+          IconButton(onPressed: changeLocale, icon: const Icon(Icons.language, size: 30, color: Colors.white,)),
+          const SizedBox(width: 50,)
+          ],
       ),
       body: Center(
         child: Row(
@@ -42,16 +47,19 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             LeftSideBar(funtion: addPost),
             CenterMain(counter: counter),
-            const RightPanel(),
+            RightPanel(),
           ],
         )
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: addPost,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      )
     );
+  }
+
+  void changeLocale() {
+    if (context.locale == const Locale('ru')) {
+      context.setLocale(const Locale('en'));
+    } else {
+      context.setLocale(const Locale('ru'));
+    }
   }
 }
 
@@ -68,24 +76,24 @@ class LeftSideBar extends StatelessWidget {
       color: accentColor,
       child: Column(
         children:[
-          IconButton(onPressed: foo, icon: const Row( children: [
-            Icon(Icons.face, size: 50, color: Colors.cyan),
-            Text("My page",),
+          IconButton(onPressed: foo, icon: Row( children: [
+            const Icon(Icons.face, size: 50, color: Colors.cyan),
+            Text(LocaleKeys.myPage.tr(),),
           ],)
           ),
-          IconButton(onPressed: foo, icon: const Row( children: [
-            Icon(Icons.favorite, size: 50, color: Colors.cyan),
-            Text("Favorite",),
+          IconButton(onPressed: foo, icon: Row( children: [
+            const Icon(Icons.favorite, size: 50, color: Colors.cyan),
+            Text(LocaleKeys.favorite.tr(),),
           ],)
           ),
-          IconButton(onPressed: foo, icon: const Row( children: [
-            Icon(Icons.photo, size: 50, color: Colors.cyan),
-            Text("Photo",),
+          IconButton(onPressed: foo, icon: Row( children: [
+            const Icon(Icons.photo, size: 50, color: Colors.cyan),
+            Text(LocaleKeys.photo.tr(),),
           ],)
           ),
-          IconButton(onPressed: funtion, icon: const Row( children: [
-            Icon(Icons.add_box, size: 50, color: Colors.cyan),
-            Text("Add post",),
+          IconButton(onPressed: funtion, icon: Row( children: [
+            const Icon(Icons.add_box, size: 50, color: Colors.cyan),
+            Text(LocaleKeys.addPost.tr(),),
           ],)
           )
         ]
@@ -110,27 +118,27 @@ class CenterMain extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset("images/avatar.jpg", width: 200, height: 200,),
+            Image.asset("assets/images/avatar.jpg", width: 200, height: 200,),
             Container(
               padding: const EdgeInsets.only(top: 20, left: 20),
               child: const Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Lebed Nikita Vladimirovich",
+                  Text("#Name",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
                   ),
-                  Text("I work in Game Forest"),
+                  Text("#Info"),
               ],)
             )
           ]
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Expanded(child: ListView.separated(
           itemCount: counter,
           itemBuilder: (BuildContext context, int index) {
             index++;
-            return createPost("Post numder $index", "Some text\nAnother text", "images/$index.jpg");
+            return createPost("#Post_title", "#Post_content", "images/$index.jpg");
           },
           separatorBuilder: (BuildContext context, int index) {
             return const SizedBox(height: 10);
@@ -159,7 +167,7 @@ class CenterMain extends StatelessWidget {
 }
 
 class RightPanel extends StatelessWidget {
-  const RightPanel({super.key});
+  RightPanel({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -171,11 +179,11 @@ class RightPanel extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text("Ads here"),
+          Text(LocaleKeys.adsHere.tr()),
           Container(height: 100, color: const Color.fromARGB(255, 240, 240, 240)),
-          const Text("And here"),
+          Text(LocaleKeys.adsHere.tr()),
           Container(height: 100, color: const Color.fromARGB(255, 240, 240, 240)),
-          const Text("And here"),
+          Text(LocaleKeys.adsHere.tr()),
           Container(height: 100, color: const Color.fromARGB(255, 240, 240, 240)),
         ],
       ),
