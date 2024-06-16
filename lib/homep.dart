@@ -8,14 +8,16 @@ Color bgColor = const Color.fromARGB(255, 237, 255, 255);
 
 @RoutePage()
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  const MyHomePage({super.key, required this.counter});
+  final int counter;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState(counter: counter);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int counter = 0;
+  _MyHomePageState({required this.counter});
+  int counter;
 
   @override
   Widget build(BuildContext context) {

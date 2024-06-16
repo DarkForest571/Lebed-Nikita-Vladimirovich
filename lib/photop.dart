@@ -16,26 +16,16 @@ class PhotoPage extends StatefulWidget {
 class _PhotoPageState extends State<PhotoPage> {
   @override
   Widget build(BuildContext context) {
-    //context.setLocale(context.locale);
-    return CenterPhoto();
-  }
-}
-
-class CenterPhoto extends StatelessWidget {
-  const CenterPhoto({super.key});
-  
-  @override
-  Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(15),
       color: bgColor,
       width: 600,
       child: Column(children: [
         Expanded(child: ListView.separated(
-          itemCount: 10,
+          itemCount: 5,
           itemBuilder: (BuildContext context, int index) {
             index++;
-            return createPost("#Post_title", "#Post_content", "images/$index.jpg");
+            return createPhoto("images/1$index.jpg");
           },
           separatorBuilder: (BuildContext context, int index) {
             return const SizedBox(height: 10);
@@ -45,20 +35,11 @@ class CenterPhoto extends StatelessWidget {
     );
   }
 
-  Widget createPost(String title, String content, String imagePath) {
+  Widget createPhoto(String imagePath) {
     return Container(
       padding: const EdgeInsets.all(15),
       color: accentColor,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-        Text(title, textAlign: TextAlign.left, style: const TextStyle(fontWeight: FontWeight.bold),),
-        const SizedBox(height: 10,),
-        Text(content, textAlign: TextAlign.left,),
-        SizedBox(height: 10),
-        Image.asset(imagePath, height: 300)
-      ],)
-      );
+      child: Image.asset(imagePath, height: 300),
+    );
   }
 }

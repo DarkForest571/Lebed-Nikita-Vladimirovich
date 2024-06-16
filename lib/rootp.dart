@@ -4,9 +4,6 @@ import 'package:auto_route/auto_route.dart';
 
 import './app_router.dart';
 import './generated/locale_keys.g.dart';
-import './homep.dart';
-import './photop.dart';
-
 
 @RoutePage()
 class RootPage extends StatefulWidget {
@@ -16,7 +13,6 @@ class RootPage extends StatefulWidget {
   State<RootPage> createState() => _RootPageState();
 }
 
-@RoutePage()
 class _RootPageState extends State<RootPage> {
   int counter = 0;
 
@@ -24,68 +20,56 @@ class _RootPageState extends State<RootPage> {
     setState(() {
       counter++;
     });
+    context.navigateTo(MyHomeRoute(counter: counter));
   }
 
+  void swapPage(int index) {
+    PageRouteInfo info;
+    if(index == 0) {
+      info = MyHomeRoute(counter: counter);
+    }
+    else if (index == 1) {
+      info = const PhotoRoute();
+    } else {
+      return;
+    }
+    setState(() {
+      context.navigateTo(info);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(LocaleKeys.appName.tr(),
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 30),
+    return AutoRouter(
+      builder: (context, child) {
+        return Scaffold(
+          appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: Text(LocaleKeys.appName.tr(),
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 30),
+          ),
+          actions: [
+            IconButton(onPressed: changeLocale, icon: const Icon(Icons.language, size: 30, color: Colors.white,)),
+            const SizedBox(width: 50,)
+            ],
         ),
-        actions: [
-          IconButton(onPressed: changeLocale, icon: const Icon(Icons.language, size: 30, color: Colors.white,)),
-          const SizedBox(width: 50,)
-          ],
-      ),
-      body: Center(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            LeftSideBar(function: addPost,),
-            AutoTabsRouter.tabBar(
-              routes: const [
-                MyHomeRoute(),
-                PhotoRoute(),
+        body:
+          Center(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                LeftSideBar(function: addPost, swapFunction: swapPage),
+                child,
+                const RightPanel(),
               ],
-              builder: (context, child, controller) {
-                final tabsRouter = AutoTabsRouter.of(context);
-                return Scaffold(
-                  appBar: AppBar(
-                    title: Text(context.topRoute.name),
-                    leading: AutoLeadingButton(),
-                    bottom: TabBar(
-                      controller: controller,
-                      tabs: const [
-                        Tab(text: '1', icon: Icon(Icons.abc)),
-                        Tab(text: '2', icon: Icon(Icons.abc)),
-                        Tab(text: '3', icon: Icon(Icons.abc)),
-                      ],
-                    ),
-                  ),
-                  body: child,
-                  bottomNavigationBar: BottomNavigationBar(
-                    currentIndex: tabsRouter.activeIndex,
-                    onTap: tabsRouter.setActiveIndex,
-                    items: [
-                      BottomNavigationBarItem(icon: Icon(Icons.abc),label: 'Books',),
-                      BottomNavigationBarItem(icon: Icon(Icons.abc),label: 'Profile',),
-                      BottomNavigationBarItem(icon: Icon(Icons.abc), label: 'Settings',),
-                    ],
-                  ),
-                );
-              },
-            ),
-            const RightPanel(),
-          ],
-        )
-      )
+            )
+          )
+        );
+      },
     );
   }
 
@@ -100,18 +84,20 @@ class _RootPageState extends State<RootPage> {
 
 
 class LeftSideBar extends StatefulWidget {
-  const LeftSideBar({super.key, required this.function});
+  const LeftSideBar({super.key, required this.function, required this.swapFunction});
   
+  final void Function(int) swapFunction;
   final VoidCallback function;
 
   @override
-  State<StatefulWidget> createState() => _LeftSideBar(function: function);
+  State<StatefulWidget> createState() => _LeftSideBar(function: function, swapFunction: swapFunction);
 }
 
 class _LeftSideBar extends State<LeftSideBar>{
+  _LeftSideBar({required this.function, required this.swapFunction});
+  
   final VoidCallback function;
-
-  _LeftSideBar({required this.function});
+  final void Function(int) swapFunction;
 
   @override
   Widget build(BuildContext context) {
@@ -147,11 +133,11 @@ class _LeftSideBar extends State<LeftSideBar>{
   }
 
   void toMainPage(){
-    AutoTabsRouter.of(context).setActiveIndex(0);
+    swapFunction(0);
   }
 
   void toPhotoPage(){
-    AutoTabsRouter.of(context).setActiveIndex(1);
+    swapFunction(1);
   }
 
   void foo(){}

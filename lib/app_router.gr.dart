@@ -16,9 +16,13 @@ abstract class _$AppRouter extends RootStackRouter {
   @override
   final Map<String, PageFactory> pagesMap = {
     MyHomeRoute.name: (routeData) {
+      final args = routeData.argsAs<MyHomeRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const MyHomePage(),
+        child: MyHomePage(
+          key: args.key,
+          counter: args.counter,
+        ),
       );
     },
     PhotoRoute.name: (routeData) {
@@ -38,16 +42,39 @@ abstract class _$AppRouter extends RootStackRouter {
 
 /// generated route for
 /// [MyHomePage]
-class MyHomeRoute extends PageRouteInfo<void> {
-  const MyHomeRoute({List<PageRouteInfo>? children})
-      : super(
+class MyHomeRoute extends PageRouteInfo<MyHomeRouteArgs> {
+  MyHomeRoute({
+    Key? key,
+    required int counter,
+    List<PageRouteInfo>? children,
+  }) : super(
           MyHomeRoute.name,
+          args: MyHomeRouteArgs(
+            key: key,
+            counter: counter,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'MyHomeRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<MyHomeRouteArgs> page = PageInfo<MyHomeRouteArgs>(name);
+}
+
+class MyHomeRouteArgs {
+  const MyHomeRouteArgs({
+    this.key,
+    required this.counter,
+  });
+
+  final Key? key;
+
+  final int counter;
+
+  @override
+  String toString() {
+    return 'MyHomeRouteArgs{key: $key, counter: $counter}';
+  }
 }
 
 /// generated route for
