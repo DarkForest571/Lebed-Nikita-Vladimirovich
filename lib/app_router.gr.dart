@@ -45,7 +45,7 @@ abstract class _$AppRouter extends RootStackRouter {
 class MyHomeRoute extends PageRouteInfo<MyHomeRouteArgs> {
   MyHomeRoute({
     Key? key,
-    required int counter,
+    required int Function() counter,
     List<PageRouteInfo>? children,
   }) : super(
           MyHomeRoute.name,
@@ -69,7 +69,7 @@ class MyHomeRouteArgs {
 
   final Key? key;
 
-  final int counter;
+  final int Function() counter;
 
   @override
   String toString() {

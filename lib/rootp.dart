@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter_application_1/homep.dart';
 
 import './app_router.dart';
 import './generated/locale_keys.g.dart';
@@ -19,14 +20,14 @@ class _RootPageState extends State<RootPage> {
   void addPost() {
     setState(() {
       counter++;
+      context.navigateTo(MyHomeRoute(counter: () => counter));
     });
-    context.navigateTo(MyHomeRoute(counter: counter));
   }
 
   void swapPage(int index) {
     PageRouteInfo info;
     if(index == 0) {
-      info = MyHomeRoute(counter: counter);
+      info = MyHomeRoute(counter: () => counter);
     }
     else if (index == 1) {
       info = const PhotoRoute();

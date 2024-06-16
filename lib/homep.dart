@@ -9,7 +9,7 @@ Color bgColor = const Color.fromARGB(255, 237, 255, 255);
 @RoutePage()
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.counter});
-  final int counter;
+  final int Function() counter;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState(counter: counter);
@@ -17,7 +17,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   _MyHomePageState({required this.counter});
-  int counter;
+  int Function() counter;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         const SizedBox(height: 20),
         Expanded(child: ListView.separated(
-          itemCount: counter,
+          itemCount: counter(),
           itemBuilder: (BuildContext context, int index) {
             index++;
             return createPost("#Post_title", "#Post_content", "images/$index.jpg");
