@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import './bloc.dart';
 
 Color mainColor = const Color.fromARGB(255, 94, 202, 202);
 Color accentColor = const Color.fromARGB(255, 192, 245, 245);
@@ -46,16 +47,21 @@ class _MyHomePageState extends State<MyHomePage> {
           ]
         ),
         const SizedBox(height: 20),
-        Expanded(child: ListView.separated(
-          itemCount: counter(),
-          itemBuilder: (BuildContext context, int index) {
-            index++;
-            return createPost("#Post_title", "#Post_content", "images/$index.jpg");
+        BlocBuilder<CounterCubit, int>(
+          builder: (context, state) {
+            return Expanded(child: ListView.separated(
+              itemCount: state,
+              itemBuilder: (BuildContext context, int index) {
+                index++;
+                return createPost("#Post_title", "#Post_content", "images/$index.jpg");
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const SizedBox(height: 10);
+              },
+            ));
           },
-          separatorBuilder: (BuildContext context, int index) {
-            return const SizedBox(height: 10);
-          },
-        ))
+        ),
+        
       ])
     );
   }
@@ -71,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Text(title, textAlign: TextAlign.left, style: const TextStyle(fontWeight: FontWeight.bold),),
         const SizedBox(height: 10,),
         Text(content, textAlign: TextAlign.left,),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Image.asset(imagePath, height: 300)
       ],)
       );

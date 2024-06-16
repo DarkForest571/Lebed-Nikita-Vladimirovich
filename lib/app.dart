@@ -7,6 +7,7 @@ import './generated/locale_keys.g.dart';
 
 final appRouter = AppRouter();
 
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
